@@ -1,6 +1,7 @@
 package com.gts.backcommons.ssi;
 
 import com.gts.backcommons.models.BaseEntity;
+import com.gts.backcommons.models.TranslationBaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 @Data
 @NoArgsConstructor
-public class CommonModule extends BaseEntity {
+public class CommonModule extends TranslationBaseEntity {
 
     private String title;
     private String description;
@@ -21,10 +22,6 @@ public class CommonModule extends BaseEntity {
     @OneToMany(mappedBy = "module", cascade = CascadeType.PERSIST)
     private List<CommonFunctionality> functionalities;
 
-    @ManyToMany
-    @JoinTable(
-            name = "role_module",
-            joinColumns = { @JoinColumn(name = "role_id") },
-            inverseJoinColumns = { @JoinColumn(name = "module_id") } )
+    @ManyToMany(mappedBy = "modules")
     private List<CommonRole> roles;
 }

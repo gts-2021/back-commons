@@ -1,6 +1,7 @@
 package com.gts.backcommons.ssi;
 
 import com.gts.backcommons.models.BaseEntity;
+import com.gts.backcommons.models.TranslationBaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @SuperBuilder
 @Data
 @NoArgsConstructor
-public class CommonFunctionality extends BaseEntity {
+public class CommonFunctionality extends TranslationBaseEntity {
 
     private String code;
     private String description;

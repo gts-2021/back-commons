@@ -1,6 +1,7 @@
 package com.gts.backcommons.ssi;
 import com.gts.backcommons.models.BaseEntity;
 import com.gts.backcommons.models.CommonUser;
+import com.gts.backcommons.models.TranslationBaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 @Data
 @NoArgsConstructor
-public class CommonRole extends BaseEntity {
+public class CommonRole extends TranslationBaseEntity {
 
     private String title;
     private String description;
