@@ -15,4 +15,6 @@ public class UserConstants {
     // default user constant
     public static final String DEFAULT_USER_NAME = "ADMIN";
     public static final String DEFAULT_USER_PSEUDO= "admin";
+
+    public static final String USER_NOT_FOUND= "user not found";
 }
