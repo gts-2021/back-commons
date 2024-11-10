@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
+@Builder
 public class UserLoginDTO {
 
     private String pseudo;
     private String password;
-    private String companyCode;
 }

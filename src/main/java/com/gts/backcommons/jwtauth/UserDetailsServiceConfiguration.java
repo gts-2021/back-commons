@@ -14,7 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @RequiredArgsConstructor
-public class UserDetailsServiceConfiguraton {
+public class UserDetailsServiceConfiguration {
 
     private final PasswordEncoder passwordEncoder;
     private final SsiConfiguration ssiConfiguration;
