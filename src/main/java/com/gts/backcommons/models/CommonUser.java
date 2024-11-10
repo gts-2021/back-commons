@@ -15,12 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 public class CommonUser extends BaseEntity {
 
-
-
     private String familyName;
     private String firstName;
     private String pseudo;
     private String password;
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

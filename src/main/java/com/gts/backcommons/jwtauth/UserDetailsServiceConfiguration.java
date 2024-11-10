@@ -16,7 +16,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @RequiredArgsConstructor
 public class UserDetailsServiceConfiguration {
 
-    private final PasswordEncoder passwordEncoder;
     private final SsiConfiguration ssiConfiguration;
 
     @Bean
@@ -31,7 +30,7 @@ public class UserDetailsServiceConfiguration {
     private UserDetails mapUserToUserDetail(CommonUser commonUser) {
         return User.builder()
                 .username(commonUser.getPseudo())
-                .password(passwordEncoder.encode(commonUser.getPassword()))
+                .password(commonUser.getPassword())
                 .build();
     }
 }
