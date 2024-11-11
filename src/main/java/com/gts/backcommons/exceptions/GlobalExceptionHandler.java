@@ -3,6 +3,7 @@ package com.gts.backcommons.exceptions;
 import com.gts.backcommons.exceptions.constants.ExceptionConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +20,7 @@ public class GlobalExceptionHandler {
                                                                       WebRequest webRequest){
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp( LocalDateTime.now())
+            .timestamp(LocalDateTime.now())
             .message(exception.getMessage())
             .path(webRequest.getDescription(false))
             .build();
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorDetails> handleExistingResourceException(ResourceAlreadyExistException exception,
                                                                       WebRequest webRequest){
     final ErrorDetails errorDetails = ErrorDetails.builder()
-          .timestamp( LocalDateTime.now())
+          .timestamp(LocalDateTime.now())
           .message(exception.getMessage())
           .path(webRequest.getDescription(false))
           .errorCode(ExceptionConstant.RESOURCE_ALREADY_EXISTS)
@@ -62,12 +63,24 @@ public class GlobalExceptionHandler {
     final String validationMessage = Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage();
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp( LocalDateTime.now())
+            .timestamp(LocalDateTime.now())
             .message(validationMessage)
             .path(webRequest.getDescription(false))
             .errorCode(ExceptionConstant.VALIDATION_ERROR)
             .build();
 
+    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<ErrorDetails> handleBadCredentialsException(BadCredentialsException exception,
+                                                                      WebRequest webRequest){
+    final ErrorDetails errorDetails = ErrorDetails.builder()
+            .timestamp(LocalDateTime.now())
+            .message(ExceptionConstant.BAD_CREDENTIALS)
+            .errorCode(ExceptionConstant.BAD_REQUEST)
+            .path(webRequest.getDescription(false))
+            .build();
     return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
   }
 
@@ -79,7 +92,7 @@ public class GlobalExceptionHandler {
     exception.printStackTrace();
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp( LocalDateTime.now())
+            .timestamp(LocalDateTime.now())
             .message(exception.getMessage())
             .path(webRequest.getDescription(false))
             .errorCode(ExceptionConstant.INTERNAL_SERVER_ERROR)
