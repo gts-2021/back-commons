@@ -6,8 +6,8 @@ import com.gts.backcommons.ssi.dtos.CommonRoleDTO;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-@Mapper(injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = {ModuleMapper.class, FunctionalityMapper.class})
-public interface RoleMapper {
+@Mapper(injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = {CommonModuleMapper.class, CommonFunctionalityMapper.class})
+public interface CommonRoleMapper {
 
 
     CommonRole fromDto(CommonRoleDTO dto);
