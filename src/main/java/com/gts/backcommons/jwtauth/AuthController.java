@@ -1,17 +1,14 @@
 package com.gts.backcommons.jwtauth;
 
 
-import com.gts.backcommons.exceptions.constants.ExceptionConstant;
 import com.gts.backcommons.models.CommonUser;
 import com.gts.backcommons.ssi.constants.UserConstants;
 import com.gts.backcommons.ssi.dtos.UserDTO;
 import com.gts.backcommons.ssi.dtos.UserLoginDTO;
 import com.gts.backcommons.ssi.repositories.CommonUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
