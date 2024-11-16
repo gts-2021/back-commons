@@ -26,6 +26,7 @@ Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
  
 ### Fixed
 
+* Removing BCryptEncoder length fixing auth problem.
  
 ### Security
 
