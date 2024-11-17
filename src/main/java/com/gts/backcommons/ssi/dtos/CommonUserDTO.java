@@ -4,10 +4,12 @@ import com.gts.backcommons.ssi.constants.UserConstants;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class CommonUserDTO {
 
     @NotBlank(message = UserConstants.FAMILY_NAME_ERROR)

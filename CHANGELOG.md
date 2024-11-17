@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 ### Added
 
+* Adding `NoArgsConstructor` to `CommonDto`.
 * Adding `id` to `CommonRoleDTO`.
 * Adding `role` and `email` to `CommonUserDTO`.
 
