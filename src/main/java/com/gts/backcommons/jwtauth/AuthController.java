@@ -1,15 +1,10 @@
 package com.gts.backcommons.jwtauth;
 
-
-import com.gts.backcommons.models.CommonUser;
-import com.gts.backcommons.ssi.constants.CommonUserConstants;
-import com.gts.backcommons.ssi.dtos.UserDTO;
+import com.gts.backcommons.ssi.dtos.UserResponse;
 import com.gts.backcommons.ssi.dtos.UserLoginDTO;
-import com.gts.backcommons.ssi.repositories.CommonUserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,31 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-
-    private final JwtUtils jwtUtils;
-
-    private final CommonUserRepository commonUserRepository;
+    private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO){
+    public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO userLoginDTO){
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    userLoginDTO.getPseudo(), userLoginDTO.getPassword()));
-
-        final String token = jwtUtils.generateToken(userLoginDTO.getPseudo());
-
-        final CommonUser user = commonUserRepository.findByPseudo(
-                userLoginDTO.getPseudo()).orElseThrow(() ->
-                new RuntimeException(CommonUserConstants.USER_NOT_FOUND));
-
-         final UserDTO userResult =  UserDTO.builder()
-                 .pseudo(user.getPseudo())
-                 .familyName(user.getFamilyName())
-                 .firstName(user.getFirstName())
-                 .email(user.getEmail())
-                 .token(token)
-                 .build();
+        final UserResponse userResult =  authService.authenticateAndGenerateToken(userLoginDTO);
 
         return ResponseEntity.ok(userResult);
     }
