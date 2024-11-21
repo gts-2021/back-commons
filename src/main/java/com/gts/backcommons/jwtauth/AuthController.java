@@ -2,7 +2,7 @@ package com.gts.backcommons.jwtauth;
 
 
 import com.gts.backcommons.models.CommonUser;
-import com.gts.backcommons.ssi.constants.UserConstants;
+import com.gts.backcommons.ssi.constants.CommonUserConstants;
 import com.gts.backcommons.ssi.dtos.UserDTO;
 import com.gts.backcommons.ssi.dtos.UserLoginDTO;
 import com.gts.backcommons.ssi.repositories.CommonUserRepository;
@@ -36,7 +36,7 @@ public class AuthController {
 
         final CommonUser user = commonUserRepository.findByPseudo(
                 userLoginDTO.getPseudo()).orElseThrow(() ->
-                new RuntimeException(UserConstants.USER_NOT_FOUND));
+                new RuntimeException(CommonUserConstants.USER_NOT_FOUND));
 
          final UserDTO userResult =  UserDTO.builder()
                  .pseudo(user.getPseudo())
