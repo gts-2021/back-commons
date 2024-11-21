@@ -18,6 +18,7 @@ Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 ### Changed
 
+* Change `UserConstants` to `CommonUserConstants`.
 * Authentification checking now from database and not from InMemory saved users.
 * Renaming `FunctionalityMapper` and `ModuleMapper` on adding `Common` prefix
 
