@@ -1,8 +1,6 @@
 package com.gts.backcommons.jwtauth;
 
 import com.gts.backcommons.exceptions.ResourceNotFoundException;
-import com.gts.backcommons.models.CommonUser;
-import com.gts.backcommons.ssi.constants.UserConstants;
 import com.gts.backcommons.ssi.dtos.UserLoginDTO;
 import com.gts.backcommons.ssi.dtos.UserResponse;
 import com.gts.backcommons.ssi.repositories.CommonUserRepository;

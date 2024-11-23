@@ -1,6 +1,6 @@
 package com.gts.backcommons.jwtauth;
 
-import com.gts.backcommons.ssi.constants.UserConstants;
+import com.gts.backcommons.ssi.constants.CommonUserConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +41,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
         });
 
         if (users.isEmpty()) {
-            throw new BadCredentialsException(UserConstants.USER_NOT_FOUND);
+            throw new BadCredentialsException(CommonUserConstants.USER_NOT_FOUND);
         }
 
         return users.get(0);
