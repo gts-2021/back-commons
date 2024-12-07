@@ -2,17 +2,12 @@ package com.gts.backcommons.jwtauth;
 
 
 import com.gts.backcommons.models.CommonUser;
-import com.gts.backcommons.ssi.SsiConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import javax.sql.DataSource;
@@ -21,7 +16,6 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class UserDetailsServiceConfiguration {
 
-    private final SsiConfiguration ssiConfiguration;
 
     @Bean
     public UserDetailsService userDetailsService(DataSource dataSource) {
