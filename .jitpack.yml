@@ -1,0 +1,9 @@
+jdk:
+  - openjdk17
+
+env:
+  MAVEN_OPTS: "-Xmx2048m"
+
+commands:
+  - mvn dependency:purge-local-repository
+  - mvn clean install -U
