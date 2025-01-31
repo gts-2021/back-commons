@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.gts</groupId>
 	<artifactId>back-commons</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<name>back-commons</name>
 	<description>Set of commons tools for Gts projects</description>
 
@@ -96,14 +96,9 @@
 				<executions>
 					<execution>
 						<id>repackage</id>
-						<phase>none</phase> <!-- On désactive la phase de repackage -->
+						<phase>none</phase> <!-- Désactive la phase de repackage -->
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
 						<exclude>
@@ -126,5 +121,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
