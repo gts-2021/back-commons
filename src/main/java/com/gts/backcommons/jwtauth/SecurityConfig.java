@@ -21,14 +21,16 @@ public class SecurityConfig {
 
     private final JwtAuthentificationFilter jwtAuthentificationFilter;
     private final CustomAuthenticationProvider customAuthenticationProvider;
+    private final SecurityProperties securityProperties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        securityProperties.getPublicPatterns().add("/login");
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers(securityProperties.getPublicPatterns().toArray(new String[0])).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
