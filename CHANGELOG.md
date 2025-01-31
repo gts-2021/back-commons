@@ -12,6 +12,22 @@ Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+* Add the possibility to permit public endpoint.
+
+## [1.0.0]
+
+### Added
+
 * Adding validation to `UserLoginDTO`.
 * Adding `CustomAuthenticationProvider` to implement retrieveUser method using `pesudo` and `companyCode`.
 * Adding `findByPseudoAndCompanyCode` in `CommonUserRepository`.
