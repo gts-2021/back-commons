@@ -28,6 +28,7 @@ Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 ### Added
 
+* Adding `userId` to `UserResponse` in `AuthService`.
 * Adding validation to `UserLoginDTO`.
 * Adding `CustomAuthenticationProvider` to implement retrieveUser method using `pesudo` and `companyCode`.
 * Adding `findByPseudoAndCompanyCode` in `CommonUserRepository`.

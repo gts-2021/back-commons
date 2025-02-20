@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class UserResponse {
 
+    private Long id;
     private String pseudo;
     private String firstName;
     private String familyName;
