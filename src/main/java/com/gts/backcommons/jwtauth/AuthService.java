@@ -39,6 +39,7 @@ public class AuthService {
         ).orElseThrow(() -> new ResourceNotFoundException("CommonUser", "pseudo", userLoginDTO.getPseudo()));
 
         return UserResponse.builder()
+                .id(user.getId())
                 .pseudo(user.getPseudo())
                 .companyCode(userLoginDTO.getCompanyCode())
                 .familyName(user.getFamilyName())
