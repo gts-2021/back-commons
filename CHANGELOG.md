@@ -8,7 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 
-## [Unreleased]
+## [1.1.0]
+
+### Added
+
+* Adding user id in UserDetails.
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+
+## [1.0.8]
 
 ### Added
 

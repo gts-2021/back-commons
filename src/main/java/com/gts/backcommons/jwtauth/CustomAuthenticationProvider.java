@@ -31,13 +31,14 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
         var userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        var query = "SELECT pseudo AS username, password, TRUE AS enabled " +
+        var query = "SELECT id, pseudo AS username, password, TRUE AS enabled " +
                 "FROM common_user " +
                 "WHERE pseudo = ? AND company_id = (SELECT id FROM company WHERE code = ?)";
 
         var users = userDetailsManager.getJdbcTemplate().query(query, new Object[]{username, companyCode}, (rs, rowNum) -> {
             String password = rs.getString("password");
-            return new User(username, password, true, true, true, true, new ArrayList<>());
+            Long id = rs.getLong("id");
+            return new CommonUserDetail(id ,username, password, true, true, true, true, new ArrayList<>());
         });
 
         if (users.isEmpty()) {
