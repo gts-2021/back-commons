@@ -1,10 +1,12 @@
 package com.gts.backcommons.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @SuperBuilder
@@ -12,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class TranslationBaseEntity extends BaseEntity {
 
-    @Column(columnDefinition = "TEXT") // it must contain json data
-    private String translations;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Translation> translations;
+
 }

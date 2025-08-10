@@ -19,7 +19,7 @@ public class CommonModule extends TranslationBaseEntity {
     private String title;
     private String description;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
     private List<CommonFunctionality> functionalities;
 
     @ManyToMany(mappedBy = "modules")
