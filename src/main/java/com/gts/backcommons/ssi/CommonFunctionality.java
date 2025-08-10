@@ -1,6 +1,5 @@
 package com.gts.backcommons.ssi;
 
-import com.gts.backcommons.models.BaseEntity;
 import com.gts.backcommons.models.TranslationBaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,11 +23,7 @@ public class CommonFunctionality extends TranslationBaseEntity {
     @JoinColumn(name = "module_id")
     private CommonModule module;
 
-    @ManyToMany
-    @JoinTable(
-            name = "excluded_role_functionality",
-            joinColumns = { @JoinColumn(name = "role_id") },
-            inverseJoinColumns = { @JoinColumn(name = "functionality_id") } )
+    @ManyToMany(mappedBy = "excludedFunctionalities" )
     private List<CommonRole> excludedRoles;
 
 
