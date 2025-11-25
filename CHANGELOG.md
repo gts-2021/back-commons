@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 
+## [1.1.3]
+
+### Added
+
+* Adding `Reference` entity  [BACKCOMMONS#154](https://quire.io/w/GTS_Golden_Technology_Solutions/#154)
+* Adding `ReferenceResponse` & `TranslationResponse` [BACKCOMMONS#154](https://quire.io/w/GTS_Golden_Technology_Solutions/#154)
+* Adding `ReferenceMapper` & `TranslationMapper` [BACKCOMMONS#154](https://quire.io/w/GTS_Golden_Technology_Solutions/#154)
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+* Fixing `ResourceNotFoundException` errorCode [BACKCOMMONS#154](https://quire.io/w/GTS_Golden_Technology_Solutions/#154)
+
+### Security
+
 ## [1.1.2]
 
 ### Added

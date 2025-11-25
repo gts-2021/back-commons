@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
             .timestamp(LocalDateTime.now())
             .message(exception.getMessage())
             .path(webRequest.getDescription(false))
+            .errorCode(ExceptionConstant.RESOURCE_NOT_FOUND)
             .build();
     return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
   }
