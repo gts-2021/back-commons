@@ -1,4 +1,4 @@
-package com.gts.backcommons.ssi.dtos;
+package com.gts.backcommons.dtos;
 
 
 import lombok.Data;

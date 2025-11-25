@@ -2,7 +2,7 @@
  * Copyright (c) 2024.
  */
 
-package com.gts.backcommons.ssi.dtos;
+package com.gts.backcommons.dtos;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;

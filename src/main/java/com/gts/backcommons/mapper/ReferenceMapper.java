@@ -1,7 +1,7 @@
-package com.gts.backcommons.ssi.mapper;
+package com.gts.backcommons.mapper;
 
 import com.gts.backcommons.models.Reference;
-import com.gts.backcommons.ssi.dtos.ReferenceResponse;
+import com.gts.backcommons.dtos.ReferenceResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

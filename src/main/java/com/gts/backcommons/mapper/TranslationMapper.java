@@ -1,7 +1,7 @@
-package com.gts.backcommons.ssi.mapper;
+package com.gts.backcommons.mapper;
 
 import com.gts.backcommons.models.Translation;
-import com.gts.backcommons.ssi.dtos.TranslationResponse;
+import com.gts.backcommons.dtos.TranslationResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
