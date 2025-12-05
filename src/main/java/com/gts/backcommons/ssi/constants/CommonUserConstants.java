@@ -19,6 +19,7 @@ public class CommonUserConstants {
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
 
     public static final String USER_NOT_FOUND= "user not found";
+    public static final String PASSWORD_NOT_CORRECT= "password not correct";
 
     public static final String PSEUDO_REQUIRED = "pseudo is required";
     public static final String PASSWORD_REQUIRED = "password is required";

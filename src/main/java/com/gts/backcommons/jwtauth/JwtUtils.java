@@ -16,17 +16,18 @@ public class JwtUtils {
     private final String SECRET_KEY = "celticakey";
 
     /** TOKEN CREATION */
-    public String generateAccessToken(String username) {
-        return createToken(username, Constants.TOKEN_VALIDITY);
+    public String generateAccessToken(String username, String companyCode) {
+        return createToken(username, companyCode, Constants.TOKEN_VALIDITY);
     }
 
-    public String generateRefreshToken(String username) {
-        return createToken(username, Constants.REFRESH_TOKEN_VALIDITY);
+    public String generateRefreshToken(String username, String companyCode) {
+        return createToken(username, companyCode, Constants.REFRESH_TOKEN_VALIDITY);
     }
 
-    public String createToken(String username, long expirationMs) {
+    public String createToken(String username, String companyCode, long expirationMs) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("companyCode", companyCode)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -57,6 +58,10 @@ public class JwtUtils {
     public boolean validateToken(String token) {
         extractAllClaims(token);
         return true;
+    }
+
+    public String extractCompanyCode(String token) {
+        return extractClaim(token, claims -> claims.get("companyCode", String.class));
     }
 
 }

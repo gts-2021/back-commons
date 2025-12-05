@@ -38,8 +38,9 @@ public class AuthController {
         if (!jwtUtils.validateToken(refreshToken))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        final String username = jwtUtils.extractUsername(refreshToken);
-        final String newAccessToken = jwtUtils.generateAccessToken(username);
+        final String pseudo = jwtUtils.extractUsername(refreshToken);
+        final String companyCode = jwtUtils.extractCompanyCode(refreshToken);
+        final String newAccessToken = jwtUtils.generateAccessToken(pseudo, companyCode);
 
         return ResponseEntity.ok(Map.of(Constants.ACCESS_TOKEN, newAccessToken));
     }

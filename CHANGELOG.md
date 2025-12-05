@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
+## [1.1.5]
+
+### Added
+
+### Changed
+
+* Using `companyCode` as claim when genrating/testing tokens, to ensure that we handle the right user.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+* Fixing authentification not using password bug. [BACKCOMMONS#166](https://quire.io/w/GTS_Golden_Technology_Solutions/#166)
+
+### Security
+
 ## [1.1.4]
 
 ### Added

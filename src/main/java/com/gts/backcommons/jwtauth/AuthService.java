@@ -23,20 +23,20 @@ public class AuthService {
 
     public UserResponse authenticateAndGenerateToken(UserLoginDTO userLoginDTO) {
 
+        var pseudo = userLoginDTO.getPseudo();
+        var companyCode = userLoginDTO.getCompanyCode();
+
         var authToken = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getPseudo(),
-                userLoginDTO.getCompanyCode()
+                userLoginDTO
         );
         authToken.setDetails(userLoginDTO.getCompanyCode());
 
         var authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        final User user = (User) authentication.getPrincipal();
-        final String username = user.getUsername();
-
-        var accessToken = jwtUtils.generateAccessToken(username);
-        var refreshToken = jwtUtils.generateRefreshToken(username);
+        var accessToken = jwtUtils.generateAccessToken(pseudo, companyCode);
+        var refreshToken = jwtUtils.generateRefreshToken(pseudo, companyCode);
 
         var existingUser = commonUserRepository.findByPseudoAndCompanyCode(
                 userLoginDTO.getPseudo(),

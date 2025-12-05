@@ -1,6 +1,7 @@
 package com.gts.backcommons.jwtauth;
 
 import com.gts.backcommons.ssi.constants.CommonUserConstants;
+import com.gts.backcommons.ssi.dtos.UserLoginDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
     private final DataSource dataSource;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
@@ -27,7 +31,10 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        var companyCode = (String) authentication.getCredentials();
+
+       var userLoginDTO = (UserLoginDTO) authentication.getCredentials();
+       var companyCode = userLoginDTO.getCompanyCode();
+       var pseudo = userLoginDTO.getPseudo();
 
         var userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
@@ -35,14 +42,20 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
                 "FROM common_user " +
                 "WHERE pseudo = ? AND company_id = (SELECT id FROM company WHERE code = ?)";
 
-        var users = userDetailsManager.getJdbcTemplate().query(query, new Object[]{username, companyCode}, (rs, rowNum) -> {
+        var users = userDetailsManager.getJdbcTemplate().query(query, new Object[]{pseudo, companyCode}, (rs, rowNum) -> {
             String password = rs.getString("password");
             Long id = rs.getLong("id");
-            return new CommonUserDetail(id ,username, password, true, true, true, true, new ArrayList<>());
+            return new CommonUserDetail(id ,pseudo, password, true, true, true, true, new ArrayList<>());
         });
 
         if (users.isEmpty()) {
             throw new BadCredentialsException(CommonUserConstants.USER_NOT_FOUND);
+        }
+
+        var user = users.get(0);
+
+        if (!passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException(CommonUserConstants.PASSWORD_NOT_CORRECT);
         }
 
         return users.get(0);
