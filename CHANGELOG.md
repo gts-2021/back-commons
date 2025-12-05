@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
+## [1.1.4]
+
+### Added
+
+* Implementing `RefreshToken` aspect [BACKCOMMONS#53](https://quire.io/w/GTS_Golden_Technology_Solutions/#53)
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+* Fixing `ResourceNotFoundException` errorCode [BACKCOMMONS#154](https://quire.io/w/GTS_Golden_Technology_Solutions/#154)
+
+### Security
 
 ## [1.1.3]
 

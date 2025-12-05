@@ -1,5 +1,6 @@
 package com.gts.backcommons.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,8 @@ import java.util.List;
 public class ErrorDetails {
 
   @NonNull
-  private LocalDateTime timestamp;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+  private String timestamp;
 
   @NonNull
   private String message;
