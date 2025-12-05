@@ -30,14 +30,14 @@ import java.util.List;
 public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-    private final UserDetailsService userDetailsService;
+    private final CommonUserDetailsService userDetailsService;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
 
         String authHeader = request.getHeader(Constants.HEADER_STRING);
-        String username = null;
+        String pseudo = null;
         String token = null;
 
 
@@ -48,12 +48,12 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
         try {
             if (authHeader != null && authHeader.startsWith(Constants.TOKEN_PREFIX)) {
                 token = authHeader.replace(Constants.TOKEN_PREFIX, "");
-                username = jwtUtils.extractUsername(token);
+                pseudo = jwtUtils.extractUsername(token);
             }
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                if (jwtUtils.validateToken(token)) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (pseudo != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtUtils.validateToken(token)) {
+                    var companyCode = jwtUtils.extractCompanyCode(token);
+                    UserDetails userDetails = userDetailsService.loadUserByPseudoAndCompanyCode(pseudo, companyCode);
 
                     //TODO add companyCode vérification for user before passing token ...
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -64,7 +64,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
 
-            }
+
             filterChain.doFilter(request, response);
 
         } catch (ExpiredJwtException e) {

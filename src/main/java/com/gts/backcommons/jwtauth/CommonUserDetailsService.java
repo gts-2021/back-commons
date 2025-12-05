@@ -35,4 +35,25 @@ public class CommonUserDetailsService implements UserDetailsService {
 
         return users.get(0);
     }
+
+
+    public UserDetails loadUserByPseudoAndCompanyCode(String username, String companyCode) throws UsernameNotFoundException {
+        var jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String query = "SELECT id, pseudo AS username, password, TRUE AS enabled " +
+                "FROM common_user " +
+                "WHERE pseudo = ? AND company_id = (SELECT id FROM company WHERE code = ?)";
+        List<CommonUserDetail> users = jdbcTemplate.query(query, new Object[]{username, companyCode}, (rs, rowNum) -> {
+            String password = rs.getString("password");
+            Long id = rs.getLong("id");
+            String pseudo = rs.getString("username");
+            return new CommonUserDetail(id, pseudo, password, true, true, true, true, new ArrayList<>());
+        });
+
+        if (users.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return users.get(0);
+    }
 }
