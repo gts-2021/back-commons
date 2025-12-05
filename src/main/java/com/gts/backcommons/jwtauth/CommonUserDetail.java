@@ -1,7 +1,6 @@
 package com.gts.backcommons.jwtauth;
 
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,8 +1,14 @@
 package com.gts.backcommons.exceptions;
 
 import com.gts.backcommons.exceptions.constants.ExceptionConstant;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +26,7 @@ public class GlobalExceptionHandler {
                                                                       WebRequest webRequest){
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp(LocalDateTime.now())
+            .timestamp(LocalDateTime.now().toString())
             .message(exception.getMessage())
             .path(webRequest.getDescription(false))
             .errorCode(ExceptionConstant.RESOURCE_NOT_FOUND)
@@ -32,7 +38,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorDetails> handleExistingResourceException(ResourceAlreadyExistException exception,
                                                                       WebRequest webRequest){
     final ErrorDetails errorDetails = ErrorDetails.builder()
-          .timestamp(LocalDateTime.now())
+          .timestamp(LocalDateTime.now().toString())
           .message(exception.getMessage())
           .path(webRequest.getDescription(false))
           .errorCode(ExceptionConstant.RESOURCE_ALREADY_EXISTS)
@@ -47,7 +53,7 @@ public class GlobalExceptionHandler {
                                                                 WebRequest webRequest) {
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp(LocalDateTime.now())
+            .timestamp(LocalDateTime.now().toString())
             .message("")
             .path(webRequest.getDescription(false))
             .errorCode(ExceptionConstant.VALIDATION_ERROR)
@@ -64,7 +70,7 @@ public class GlobalExceptionHandler {
     final String validationMessage = Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage();
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp(LocalDateTime.now())
+            .timestamp(LocalDateTime.now().toString())
             .message(validationMessage)
             .path(webRequest.getDescription(false))
             .errorCode(ExceptionConstant.VALIDATION_ERROR)
@@ -77,7 +83,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorDetails> handleBadCredentialsException(BadCredentialsException exception,
                                                                       WebRequest webRequest){
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp(LocalDateTime.now())
+            .timestamp(LocalDateTime.now().toString())
             .message(ExceptionConstant.BAD_CREDENTIALS)
             .errorCode(ExceptionConstant.BAD_REQUEST)
             .path(webRequest.getDescription(false))
@@ -85,7 +91,68 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
   }
 
-  // This is a global exception handler
+  /** JWT EXCEPTION */
+  @ExceptionHandler(ExpiredJwtException.class)
+  public ResponseEntity<ErrorDetails> handleExpiredToken(ExpiredJwtException exception, HttpServletRequest request) {
+
+    final ErrorDetails errorDetails = ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(exception.getMessage())
+            .path(request.getRequestURI())
+            .errorCode(ExceptionConstant.TOKEN_EXPIRED)
+            .build();
+    return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(SignatureException.class)
+  public ResponseEntity<?> handleInvalidSignature(SignatureException exception, HttpServletRequest request) {
+
+    final ErrorDetails errorDetails = ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(exception.getMessage())
+            .path(request.getRequestURI())
+            .errorCode(ExceptionConstant.INVALID_SIGNATURE)
+            .build();
+    return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(MalformedJwtException.class)
+  public ResponseEntity<?> handleMalformedJwt(MalformedJwtException exception, HttpServletRequest request) {
+
+    final ErrorDetails errorDetails = ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(exception.getMessage())
+            .path(request.getRequestURI())
+            .errorCode(ExceptionConstant.MALFORMED_TOKEN)
+            .build();
+    return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(JwtException.class)
+  public ResponseEntity<?> handleGenericJwt(JwtException exception, HttpServletRequest request) {
+
+    final ErrorDetails errorDetails = ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(exception.getMessage())
+            .path(request.getRequestURI())
+            .errorCode(ExceptionConstant.INVALID_TOKEN)
+            .build();
+    return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<?> handleForbidden(AccessDeniedException exception, HttpServletRequest request) {
+
+    final ErrorDetails errorDetails = ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(exception.getMessage())
+            .path(request.getRequestURI())
+            .errorCode(ExceptionConstant.FORBIDDEN)
+            .build();
+    return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
+  }
+
+  /** global exception */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception,
                                                             WebRequest webRequest){
@@ -93,7 +160,7 @@ public class GlobalExceptionHandler {
     exception.printStackTrace();
 
     final ErrorDetails errorDetails = ErrorDetails.builder()
-            .timestamp(LocalDateTime.now())
+            .timestamp(LocalDateTime.now().toString())
             .message(exception.getMessage())
             .path(webRequest.getDescription(false))
             .errorCode(ExceptionConstant.INTERNAL_SERVER_ERROR)

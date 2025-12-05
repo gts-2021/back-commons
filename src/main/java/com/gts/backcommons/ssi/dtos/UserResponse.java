@@ -12,6 +12,7 @@ public class UserResponse {
     private String firstName;
     private String familyName;
     private String email;
-    private String token;
     private String companyCode;
+    private String accessToken;
+    private String refreshToken;
 }

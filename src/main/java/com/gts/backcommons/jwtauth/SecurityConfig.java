@@ -26,6 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         securityProperties.getPublicPatterns().add("/login");
+        securityProperties.getPublicPatterns().add("/refresh");
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize ->

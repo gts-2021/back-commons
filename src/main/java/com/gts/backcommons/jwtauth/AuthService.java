@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,21 +32,26 @@ public class AuthService {
         var authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        var token = jwtUtils.generateToken(userLoginDTO.getPseudo());
+        final User user = (User) authentication.getPrincipal();
+        final String username = user.getUsername();
 
-        var user = commonUserRepository.findByPseudoAndCompanyCode(
+        var accessToken = jwtUtils.generateAccessToken(username);
+        var refreshToken = jwtUtils.generateRefreshToken(username);
+
+        var existingUser = commonUserRepository.findByPseudoAndCompanyCode(
                 userLoginDTO.getPseudo(),
                 userLoginDTO.getCompanyCode()
         ).orElseThrow(() -> new ResourceNotFoundException("CommonUser", "pseudo", userLoginDTO.getPseudo()));
 
         return UserResponse.builder()
-                .id(user.getId())
-                .pseudo(user.getPseudo())
+                .id(existingUser.getId())
+                .pseudo(existingUser.getPseudo())
                 .companyCode(userLoginDTO.getCompanyCode())
-                .familyName(user.getFamilyName())
-                .firstName(user.getFirstName())
-                .email(user.getEmail())
-                .token(token)
+                .familyName(existingUser.getFamilyName())
+                .firstName(existingUser.getFirstName())
+                .email(existingUser.getEmail())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }
