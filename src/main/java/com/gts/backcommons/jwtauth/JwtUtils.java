@@ -3,17 +3,18 @@ package com.gts.backcommons.jwtauth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
 public class JwtUtils {
 
-    private final String SECRET_KEY = "celticakey";
+    private final String SECRET_KEY = "celticakeycelticakeycelticakeycelticakey"; // doit être assez long pour HS256
 
     /** TOKEN CREATION */
     public String generateAccessToken(String username, String companyCode) {
@@ -25,12 +26,13 @@ public class JwtUtils {
     }
 
     public String createToken(String username, String companyCode, long expirationMs) {
+        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(username)
                 .claim("companyCode", companyCode)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -39,12 +41,11 @@ public class JwtUtils {
         return extractAllClaims(token).getSubject();
     }
 
-    /* this method can throw 'ExpiredJwtException', 'SignatureException' , 'MalformedJwtException' or 'IllegalArgumentException'
-     exceptions all these exception are treated in GlobalExceptionHandler
-    */
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -63,6 +64,4 @@ public class JwtUtils {
     public String extractCompanyCode(String token) {
         return extractClaim(token, claims -> claims.get("companyCode", String.class));
     }
-
 }
-
