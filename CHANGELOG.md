@@ -7,7 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
-## [1.1.6]
+## [1.2.0]
+
+### Added
+
+### Changed
+
+* Upgrade to `springboot4` and `Java21`.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.1.5]
 
 ### Added
 

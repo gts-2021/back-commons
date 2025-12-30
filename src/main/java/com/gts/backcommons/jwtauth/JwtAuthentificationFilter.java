@@ -1,5 +1,6 @@
 package com.gts.backcommons.jwtauth;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gts.backcommons.exceptions.ErrorDetails;
 import com.gts.backcommons.exceptions.constants.ExceptionConstant;
@@ -16,10 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -52,17 +53,17 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
             }
 
             if (pseudo != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtUtils.validateToken(token)) {
-                    var companyCode = jwtUtils.extractCompanyCode(token);
-                    UserDetails userDetails = userDetailsService.loadUserByPseudoAndCompanyCode(pseudo, companyCode);
+                var companyCode = jwtUtils.extractCompanyCode(token);
+                UserDetails userDetails = userDetailsService.loadUserByPseudoAndCompanyCode(pseudo, companyCode);
 
-                    //TODO add companyCode vérification for user before passing token ...
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, /*Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))*/ List.of()
-                    );
+                //TODO add companyCode vérification for user before passing token ...
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, /*Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))*/ List.of()
+                );
 
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
 
 
             filterChain.doFilter(request, response);
