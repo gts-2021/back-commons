@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 
 @Configuration
@@ -22,6 +23,7 @@ public class SecurityConfig {
     private final JwtAuthentificationFilter jwtAuthentificationFilter;
     private final CustomAuthenticationProvider customAuthenticationProvider;
     private final SecurityProperties securityProperties;
+    private final CorsConfigurationSource configurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,6 +31,7 @@ public class SecurityConfig {
         securityProperties.getPublicPatterns().add("/refresh");
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(configurationSource))
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(securityProperties.getPublicPatterns().toArray(new String[0])).permitAll()
