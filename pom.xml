@@ -11,7 +11,7 @@
 
 	<groupId>com.gts</groupId>
 	<artifactId>back-commons</artifactId>
-	<version>1.3.3</version>
+	<version>1.3.4</version>
 	<name>back-commons</name>
 	<description>Set of commons tools for Gts projects</description>
 

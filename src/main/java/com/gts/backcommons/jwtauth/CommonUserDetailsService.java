@@ -21,7 +21,7 @@ public class CommonUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String query = "SELECT id, pseudo AS username, password, TRUE AS enabled FROM common_user WHERE pseudo = ?";
+        String query = "SELECT id, pseudo AS username, password, TRUE AS enabled FROM common_user WHERE lower(pseudo) = lower(?)";
         List<CommonUserDetail> users = jdbcTemplate.query(query, new Object[]{username}, (rs, rowNum) -> {
             String password = rs.getString("password");
             Long id = rs.getLong("id");
@@ -42,11 +42,13 @@ public class CommonUserDetailsService implements UserDetailsService {
 
         String query = "SELECT id, pseudo AS username, password, TRUE AS enabled " +
                 "FROM common_user " +
-                "WHERE pseudo = ? AND company_id = (SELECT id FROM company WHERE code = ?)";
+                "WHERE LOWER(pseudo) = LOWER(?) " +
+                "AND company_id = (SELECT id FROM company WHERE LOWER(code) = LOWER(?))";
+
         List<CommonUserDetail> users = jdbcTemplate.query(query, new Object[]{username, companyCode}, (rs, rowNum) -> {
-            String password = rs.getString("password");
             Long id = rs.getLong("id");
             String pseudo = rs.getString("username");
+            String password = rs.getString("password");
             return new CommonUserDetail(id, pseudo, password, true, true, true, true, new ArrayList<>());
         });
 

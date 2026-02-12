@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
+## [1.3.4]
+
+### Added
+
+### Changed
+
+* Ignoring pseudo and companyCode  case when user login .
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [1.3.1]
 
 ### Added
@@ -14,6 +30,8 @@ Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 * Enable `Cors` configuration.
 
 ### Changed
+
+* Ignoring pseudo and companyCode  case when user login .
 
 ### Deprecated
 

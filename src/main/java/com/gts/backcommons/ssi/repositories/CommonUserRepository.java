@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface CommonUserRepository extends JpaRepository<CommonUser,Long> {
 
-    @Query("SELECT u FROM User u WHERE u.pseudo = :pseudo AND u.company.code = :companyCode")
+    @Query("SELECT u FROM User u WHERE LOWER(u.pseudo) = LOWER(:pseudo) AND LOWER(u.company.code) = LOWER(:companyCode)")
     Optional<CommonUser> findByPseudoAndCompanyCode(@Param("pseudo") String pseudo, @Param("companyCode") String companyCode);
 }
 

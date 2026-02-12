@@ -7,7 +7,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -40,7 +39,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
         var query = "SELECT id, pseudo AS username, password, TRUE AS enabled " +
                 "FROM common_user " +
-                "WHERE pseudo = ? AND company_id = (SELECT id FROM company WHERE code = ?)";
+                "WHERE lower(pseudo) = lower(?) AND company_id = (SELECT id FROM company WHERE lower(code) = lower(?))";
 
         var users = userDetailsManager.getJdbcTemplate().query(query, new Object[]{pseudo, companyCode}, (rs, rowNum) -> {
             String password = rs.getString("password");
