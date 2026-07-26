@@ -15,4 +15,5 @@ public class UserResponse {
     private String companyCode;
     private String accessToken;
     private String refreshToken;
+    private CommonRoleDTO role;
 }

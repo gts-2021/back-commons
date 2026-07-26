@@ -1,6 +1,7 @@
 package com.gts.backcommons.jwtauth;
 
 import com.gts.backcommons.exceptions.ResourceNotFoundException;
+import com.gts.backcommons.ssi.dtos.CommonRoleDTO;
 import com.gts.backcommons.ssi.dtos.UserLoginDTO;
 import com.gts.backcommons.ssi.dtos.UserResponse;
 import com.gts.backcommons.ssi.repositories.CommonUserRepository;
@@ -10,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +46,8 @@ public class AuthService {
                 userLoginDTO.getCompanyCode()
         ).orElseThrow(() -> new ResourceNotFoundException("CommonUser", "pseudo", userLoginDTO.getPseudo()));
 
+        var optionalRole = Optional.ofNullable(existingUser.getRole());
+
         return UserResponse.builder()
                 .id(existingUser.getId())
                 .pseudo(existingUser.getPseudo())
@@ -52,6 +57,13 @@ public class AuthService {
                 .email(existingUser.getEmail())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .role(optionalRole.map(role ->
+                                CommonRoleDTO.builder()
+                                        .id(existingUser.getRole().getId())
+                                        .title(existingUser.getRole().getTitle())
+                                        .build()
+                        ).orElse(null)
+                )
                 .build();
     }
 }

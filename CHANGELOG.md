@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
+
+## [1.3.4]
+
+### Added
+
+* Adding the attribute `role` for `UserResponse.
+
+### Changed
+
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [1.3.4]
 
 ### Added
