@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = {CommonFunctionalityMapper.class})
 public interface CommonModuleMapper {
 
     CommonModule fromDto(CommonModuleDTO dto);
