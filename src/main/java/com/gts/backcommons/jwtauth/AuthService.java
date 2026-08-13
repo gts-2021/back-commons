@@ -4,8 +4,10 @@ import com.gts.backcommons.exceptions.ResourceNotFoundException;
 import com.gts.backcommons.ssi.dtos.CommonRoleDTO;
 import com.gts.backcommons.ssi.dtos.UserLoginDTO;
 import com.gts.backcommons.ssi.dtos.UserResponse;
+import com.gts.backcommons.ssi.mapper.CommonRoleMapper;
 import com.gts.backcommons.ssi.repositories.CommonUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,8 @@ public class AuthService {
     private final JwtUtils jwtUtils;
 
     private final CommonUserRepository commonUserRepository;
+
+    CommonRoleMapper roleMapper = Mappers.getMapper(CommonRoleMapper.class);
 
     public UserResponse authenticateAndGenerateToken(UserLoginDTO userLoginDTO) {
 
@@ -46,7 +50,10 @@ public class AuthService {
                 userLoginDTO.getCompanyCode()
         ).orElseThrow(() -> new ResourceNotFoundException("CommonUser", "pseudo", userLoginDTO.getPseudo()));
 
-        var optionalRole = Optional.ofNullable(existingUser.getRole());
+        var role =  existingUser.getRole();
+
+        var roleDto = roleMapper.toDto(role);
+
 
         return UserResponse.builder()
                 .id(existingUser.getId())
@@ -57,13 +64,7 @@ public class AuthService {
                 .email(existingUser.getEmail())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .role(optionalRole.map(role ->
-                                CommonRoleDTO.builder()
-                                        .id(existingUser.getRole().getId())
-                                        .title(existingUser.getRole().getTitle())
-                                        .build()
-                        ).orElse(null)
-                )
+                .role(roleDto)
                 .build();
     }
 }
