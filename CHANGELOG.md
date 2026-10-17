@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
 
+## [1.6.0]
+
+### Added
+
+* Shared `EntityStatus` for user access management, with inactive-account checks during login, token refresh and JWT authentication, and centralized access-denied errors. [FLEXIBOOK-276](https://app.plane.so/gts-tech/browse/FLEXIBOOK-276/)
+
 ## [1.5.0]
 
 ### Added

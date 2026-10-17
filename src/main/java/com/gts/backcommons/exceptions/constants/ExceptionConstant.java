@@ -12,6 +12,8 @@ public class ExceptionConstant {
 
   public static final String BAD_CREDENTIALS = "Nom d'utilisateur ou mot de passe incorrect";
 
+  public static final String USER_NOT_FOUND = "Utilisateur introuvable";
+
   public static final String RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND";
 
   public static final String TOKEN_EXPIRED = "TOKEN_EXPIRED";
@@ -21,6 +23,8 @@ public class ExceptionConstant {
   public static final String MALFORMED_TOKEN = "MALFORMED_TOKEN";
 
   public static final String INVALID_TOKEN = "INVALID_TOKEN";
+
+  public static final String USER_INACTIVE_MESSAGE = "Accès refusé : votre compte n’est plus actif. Veuillez contacter votre administrateur.";
 
   public static final String FORBIDDEN = "FORBIDDEN";
 

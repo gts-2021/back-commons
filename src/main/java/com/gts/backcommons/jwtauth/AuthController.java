@@ -21,6 +21,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtUtils jwtUtils;
+    private final CommonUserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO userLoginDTO){
@@ -40,6 +41,7 @@ public class AuthController {
 
         final String pseudo = jwtUtils.extractUsername(refreshToken);
         final String companyCode = jwtUtils.extractCompanyCode(refreshToken);
+        UserAccessPolicy.requireActive(userDetailsService.loadUserByPseudoAndCompanyCode(pseudo, companyCode));
         final String newAccessToken = jwtUtils.generateAccessToken(pseudo, companyCode);
 
         return ResponseEntity.ok(Map.of(Constants.ACCESS_TOKEN, newAccessToken));

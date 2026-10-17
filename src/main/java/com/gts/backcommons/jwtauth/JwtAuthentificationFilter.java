@@ -3,6 +3,8 @@ package com.gts.backcommons.jwtauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gts.backcommons.exceptions.ErrorDetails;
+import com.gts.backcommons.exceptions.InactiveUserException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.gts.backcommons.exceptions.constants.ExceptionConstant;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -56,9 +58,9 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
                 var companyCode = jwtUtils.extractCompanyCode(token);
                 UserDetails userDetails = userDetailsService.loadUserByPseudoAndCompanyCode(pseudo, companyCode);
 
-                //TODO add companyCode vérification for user before passing token ...
+                UserAccessPolicy.requireActive(userDetails);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, /*Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))*/ List.of()
+                        userDetails, null, List.of()
                 );
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -68,6 +70,12 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
 
+        } catch (InactiveUserException e) {
+            SecurityContextHolder.clearContext();
+            sendJwtError(response, InactiveUserException.ERROR_CODE, e.getMessage(), HttpStatus.FORBIDDEN);
+        } catch (UsernameNotFoundException e) {
+            SecurityContextHolder.clearContext();
+            sendJwtError(response, ExceptionConstant.INVALID_TOKEN, ExceptionConstant.USER_NOT_FOUND, HttpStatus.UNAUTHORIZED);
         } catch (ExpiredJwtException e) {
             sendJwtError(response, ExceptionConstant.TOKEN_EXPIRED, e.getMessage(), HttpStatus.UNAUTHORIZED);
         } catch (SignatureException e) {
@@ -89,6 +97,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
                 .build();
         response.setStatus(status.value());
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(new ObjectMapper().writeValueAsString(details));
     }
 

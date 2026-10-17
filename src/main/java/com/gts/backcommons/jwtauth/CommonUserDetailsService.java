@@ -21,26 +21,26 @@ public class CommonUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String query = "SELECT id, pseudo AS username, password, TRUE AS enabled FROM common_user WHERE lower(pseudo) = lower(?)";
+        String query = "SELECT id, pseudo AS username, password, entity_status FROM common_user WHERE lower(pseudo) = lower(?)";
         List<CommonUserDetail> users = jdbcTemplate.query(query, new Object[]{username}, (rs, rowNum) -> {
             String password = rs.getString("password");
             Long id = rs.getLong("id");
             String pseudo = rs.getString("username");
-            return new CommonUserDetail(id, pseudo, password, true, true, true, true, new ArrayList<>());
+            return new CommonUserDetail(id, pseudo, password, UserAccessPolicy.isActive(rs.getString("entity_status")), true, true, true, new ArrayList<>());
         });
 
         if (users.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return users.get(0);
+        return users.getFirst();
     }
 
 
     public UserDetails loadUserByPseudoAndCompanyCode(String username, String companyCode) throws UsernameNotFoundException {
         var jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String query = "SELECT id, pseudo AS username, password, TRUE AS enabled " +
+        String query = "SELECT id, pseudo AS username, password, entity_status " +
                 "FROM common_user " +
                 "WHERE LOWER(pseudo) = LOWER(?) " +
                 "AND company_id = (SELECT id FROM company WHERE LOWER(code) = LOWER(?))";
@@ -49,13 +49,13 @@ public class CommonUserDetailsService implements UserDetailsService {
             Long id = rs.getLong("id");
             String pseudo = rs.getString("username");
             String password = rs.getString("password");
-            return new CommonUserDetail(id, pseudo, password, true, true, true, true, new ArrayList<>());
+            return new CommonUserDetail(id, pseudo, password, UserAccessPolicy.isActive(rs.getString("entity_status")), true, true, true, new ArrayList<>());
         });
 
         if (users.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return users.get(0);
+        return users.getFirst();
     }
 }
