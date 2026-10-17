@@ -37,26 +37,27 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
 
         var userDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        var query = "SELECT id, pseudo AS username, password, TRUE AS enabled " +
+        var query = "SELECT id, pseudo AS username, password, entity_status " +
                 "FROM common_user " +
                 "WHERE lower(pseudo) = lower(?) AND company_id = (SELECT id FROM company WHERE lower(code) = lower(?))";
 
         var users = userDetailsManager.getJdbcTemplate().query(query, new Object[]{pseudo, companyCode}, (rs, rowNum) -> {
             String password = rs.getString("password");
             Long id = rs.getLong("id");
-            return new CommonUserDetail(id ,pseudo, password, true, true, true, true, new ArrayList<>());
+            return new CommonUserDetail(id ,pseudo, password, UserAccessPolicy.isActive(rs.getString("entity_status")), true, true, true, new ArrayList<>());
         });
 
         if (users.isEmpty()) {
             throw new BadCredentialsException(CommonUserConstants.USER_NOT_FOUND);
         }
 
-        var user = users.get(0);
+        var user = users.getFirst();
 
         if (!passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
             throw new BadCredentialsException(CommonUserConstants.PASSWORD_NOT_CORRECT);
         }
 
-        return users.get(0);
+        UserAccessPolicy.requireActive(user);
+        return user;
     }
 }

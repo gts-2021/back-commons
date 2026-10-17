@@ -11,7 +11,7 @@
 
 	<groupId>com.gts</groupId>
 	<artifactId>back-commons</artifactId>
-	<version>1.5.0</version>
+	<version>1.6.0</version>
 	<name>back-commons</name>
 	<description>Set of commons tools for Gts projects</description>
 
@@ -82,6 +82,11 @@
         </dependency>
 
         <!-- Tests -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
