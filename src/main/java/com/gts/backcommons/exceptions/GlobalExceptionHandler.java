@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -89,6 +90,26 @@ public class GlobalExceptionHandler {
             .path(webRequest.getDescription(false))
             .build();
     return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(InactiveUserException.class)
+  public ResponseEntity<ErrorDetails> handleInactiveUser(InactiveUserException exception, HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(exception.getMessage())
+            .errorCode(InactiveUserException.ERROR_CODE)
+            .path(request.getRequestURI())
+            .build());
+  }
+
+  @ExceptionHandler(UsernameNotFoundException.class)
+  public ResponseEntity<ErrorDetails> handleMissingUser(HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorDetails.builder()
+            .timestamp(LocalDateTime.now().toString())
+            .message(ExceptionConstant.USER_NOT_FOUND)
+            .errorCode(ExceptionConstant.INVALID_TOKEN)
+            .path(request.getRequestURI())
+            .build());
   }
 
   /** JWT EXCEPTION */
