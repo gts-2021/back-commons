@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class CommonUser extends BaseEntity {
     private CommonRole role;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "entity_status", nullable = false, columnDefinition = "VARCHAR(32) DEFAULT 'ACTIF'")
+    @Column(name = "entity_status", nullable = false, columnDefinition = "VARCHAR(32)")
+    @ColumnDefault("'ACTIF'")
     @Builder.Default
     private EntityStatus entityStatus = EntityStatus.ACTIF;
 

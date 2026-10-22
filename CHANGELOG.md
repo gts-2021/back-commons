@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
+## [1.6.1]
 
+### Removed
+
+* removing DEFAULT 'ACTIF' from  `CommonUser` ENTITY
+* 
 ## [1.6.0]
 
 ### Added
