@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama and Hadjersi Mohamed | 01/09/2024
 
+## [1.7.0]
+
+### Added
+
+* Adding monitoring libraries (Actuator, Prometheus, hibernate-micrometer)
+
+### Changed
+
+* Upgrade springboot to v4.0.6
+* Upgrade jackson to v.0.13
+
 ## [1.6.1]
 
 ### Removed
