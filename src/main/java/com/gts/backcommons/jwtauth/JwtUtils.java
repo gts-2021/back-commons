@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -14,7 +16,14 @@ import java.util.function.Function;
 @Service
 public class JwtUtils {
 
-    private final String SECRET_KEY = "celticakeycelticakeycelticakeycelticakey"; // doit être assez long pour HS256
+    @Value("${security.jwt.secret-key}")
+    private final String secretKey; // doit être assez long pour HS256
+
+    public JwtUtils(
+            @Value("${security.jwt.secret-key}") String secretKey
+    ) {
+        this.secretKey = secretKey;
+    }
 
     /** TOKEN CREATION */
     public String generateAccessToken(String username, String companyCode) {
@@ -26,7 +35,7 @@ public class JwtUtils {
     }
 
     public String createToken(String username, String companyCode, long expirationMs) {
-        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(username)
                 .claim("companyCode", companyCode)
@@ -43,7 +52,7 @@ public class JwtUtils {
 
     private Claims extractAllClaims(String token) {
         SecretKey key = Keys.hmacShaKeyFor(
-                SECRET_KEY.getBytes(StandardCharsets.UTF_8)
+                secretKey.getBytes(StandardCharsets.UTF_8)
         );
 
         return Jwts.parser()
