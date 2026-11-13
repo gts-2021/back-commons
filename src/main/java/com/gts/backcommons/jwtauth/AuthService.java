@@ -116,7 +116,6 @@ public class AuthService {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
 
-
             filterChain.doFilter(request, response);
 
         } catch (InactiveUserException e) {
